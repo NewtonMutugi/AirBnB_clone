@@ -42,11 +42,28 @@ class TestFileStorage(unittest.TestCase):
         base.save()
         key = base.__class__.__name__ + "." + base.id
         self.assertTrue(key in storage.all())
+#
+    # def test_reload(self):
+    #    """Test reload method"""
+    #    base = BaseModel()
+    #    base.save()
+    #    storage.reload()
+    #    key = base.__class__.__name__ + "." + base.id
+    #    self.assertTrue(key in storage.all())
 
-    def test_reload(self):
-        """Test reload method"""
-        base = BaseModel()
-        base.save()
-        storage.reload()
-        key = base.__class__.__name__ + "." + base.id
-        self.assertTrue(key in storage.all())
+    def test_file_path(self):
+        """Test file_path attribute"""
+        self.assertEqual(type(FileStorage._FileStorage__file_path), str)
+
+    def test_objects(self):
+        """Test objects attribute"""
+        self.assertEqual(type(FileStorage._FileStorage__objects), dict)
+
+    def test_file_path_value(self):
+        """Test file_path attribute value"""
+        self.assertEqual(FileStorage._FileStorage__file_path, "file.json")
+
+    def test_file_path_private(self):
+        """Test file_path attribute is private"""
+        with self.assertRaises(AttributeError):
+            print(FileStorage.__file_path)

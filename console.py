@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 """The console for the AirBnB project"""
 import cmd
-import shlex
-import models
-from models.base_model import BaseModel
 
 
 class HBNBCommand(cmd.Cmd):

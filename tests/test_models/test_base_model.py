@@ -12,6 +12,12 @@ from uuid import UUID
 class TestBaseModel(unittest.TestCase):
     """Test for BaseModel"""
 
+    def __init__(self, *args, **kwargs):
+        """ test constructor """
+        super().__init__(*args, **kwargs)
+        self.name = 'BaseModel'
+        self.value = BaseModel
+
     def setUp(self):
         """Set up test methods"""
         self.base = BaseModel()
@@ -52,7 +58,7 @@ class TestBaseModel(unittest.TestCase):
 
     def test_to_dict(self):
         """Test to_dict"""
-        self.base.name = "Holberton"
+        self.base.name = "Name"
         self.base.my_number = 89
         self.base_json = self.base.to_dict()
         self.assertEqual(self.base_json["id"], self.base.id)
@@ -85,7 +91,7 @@ class TestBaseModel(unittest.TestCase):
     def test_kwargs_empty(self):
         """Test kwargs empty"""
         base2 = BaseModel()
-        base2.name = "Holberton"
+        base2.name = "Name"
         base2.my_number = 89
         base2_json = base2.to_dict()
         base3 = BaseModel(**base2_json)

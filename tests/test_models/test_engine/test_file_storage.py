@@ -14,6 +14,20 @@ class TestFileStorage(unittest.TestCase):
     def test_all(self):
         """Test all method"""
         self.assertEqual(type(storage.all()), dict)
+        # self.assertEqual(type(storage.all(BaseModel)), dict)
+        obj1 = BaseModel()
+        obj2 = BaseModel()
+        obj3 = BaseModel()
+        storage.new(obj1)
+        storage.new(obj2)
+        storage.new(obj3)
+        # self.assertEqual(type(storage.all(BaseModel)), dict)
+        key = obj1.__class__.__name__ + "." + obj1.id
+        self.assertTrue(key in storage.all())
+        key = obj2.__class__.__name__ + "." + obj2.id
+        self.assertTrue(key in storage.all())
+        key = obj3.__class__.__name__ + "." + obj3.id
+        self.assertTrue(key in storage.all())
 
     def test_new(self):
         """Test new method"""

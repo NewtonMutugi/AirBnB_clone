@@ -59,3 +59,34 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(self.base_json["my_number"], self.base.my_number)
         self.assertEqual(type(self.base_json["created_at"]), str)
         self.assertEqual(type(self.base_json["updated_at"]), str)
+
+    def test_kwargs(self):
+        """Test kwargs"""
+        self.base.name = "Person"
+        self.base.my_number = 89
+        self.base_json = self.base.to_dict()
+        base2 = BaseModel(**self.base_json)
+        self.assertEqual(self.base.id, base2.id)
+        self.assertEqual(self.base.created_at, base2.created_at)
+        self.assertEqual(self.base.updated_at, base2.updated_at)
+        self.assertEqual(self.base.name, base2.name)
+        self.assertEqual(self.base.my_number, base2.my_number)
+        self.assertIsNot(self.base, base2)
+        self.assertIsInstance(base2.created_at, datetime)
+        self.assertIsInstance(base2.updated_at, datetime)
+
+    def test_kwargs_empty(self):
+        """Test kwargs empty"""
+        base2 = BaseModel()
+        base2.name = "Holberton"
+        base2.my_number = 89
+        base2_json = base2.to_dict()
+        base3 = BaseModel(**base2_json)
+        self.assertEqual(base2.id, base3.id)
+        self.assertEqual(base2.created_at, base3.created_at)
+        self.assertEqual(base2.updated_at, base3.updated_at)
+        self.assertEqual(base2.name, base3.name)
+        self.assertEqual(base2.my_number, base3.my_number)
+        self.assertIsNot(base2, base3)
+        self.assertIsInstance(base3.created_at, datetime)
+        self.assertIsInstance(base3.updated_at, datetime)

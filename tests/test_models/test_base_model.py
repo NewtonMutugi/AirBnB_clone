@@ -2,6 +2,7 @@
 """Test for base_model"""
 
 from datetime import datetime
+import json
 import unittest
 
 from models.base_model import BaseModel
@@ -40,8 +41,14 @@ class TestBaseModel(unittest.TestCase):
 
     def test_save(self):
         """Test save"""
-        self.base.save()
-        self.assertNotEqual(self.base.created_at, self.base.updated_at)
+        self.name = 'BaseModel'
+        self.value = BaseModel
+        n = self.value()
+        n.save()
+        key = self.name + "." + n.id
+        with open('file.json', 'r') as f:
+            j = json.load(f)
+            self.assertEqual(j[key], n.to_dict())
 
     def test_to_dict(self):
         """Test to_dict"""

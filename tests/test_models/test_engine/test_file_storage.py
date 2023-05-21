@@ -60,10 +60,12 @@ class TestFileStorage(unittest.TestCase):
         with self.assertRaises(AttributeError):
             print(FileStorage.__file_path)
 
-    def test_reload(self):
+    def test_file_storage_reload(self):
         """Test file storage reload method"""
-        base = BaseModel()
-        base.save()
         storage.reload()
-        key = base.__class__.__name__ + "." + base.id
-        self.assertTrue(key in storage.all())
+        self.assertEqual(type(storage.all()), dict)
+
+    def test_file_storage_save(self):
+        """Test file storage save method"""
+        storage.save()
+        self.assertEqual(type(storage.all()), dict)

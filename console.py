@@ -40,51 +40,28 @@ class HBNBCommand(cmd.Cmd):
             except ModuleNotFoundError:
                 print("** class doesn't exist **")
 
-    # def do_show(self, arg):
-    #     """Prints the string representation of an instance based on the class
-    #     name and id"""
-    #     if not arg:
-    #         print("** class name missing **")
-    #     else:
-    #         try:
-    #             from models.base_model import BaseModel
-    #             from models import storage
-    #             args = arg.split()
-    #             if args[0] != "BaseModel":
-    #                 print("** class doesn't exist **")
-    #             elif len(args) == 1:
-    #                 print("** instance id missing **")
-    #             else:
-    #                 my_dict = storage.all()
-    #                 key = args[0] + "." + args[1]
-    #                 obj = my_dict[key]
-    #                 # print(key)
-    #                 print(obj)
-    #         except KeyError:
-    #             print("** no instance found **")
-
-    def do_show(self, line):
-        """Show command to display the string representation of an instance"""
-        args = line.split()
-        if len(args) < 2:
-            print("** instance id missing **")
-            return
-
-        class_name = args[0]
-        instance_id = args[1]
-
-        if class_name not in my_classes:
-            print("** class doesn't exist **")
-            return
-
-        key = "{}.{}".format(class_name, instance_id)
-        objects = storage.all()
-
-        if key in objects:
-            instance = objects[key]
-            print(instance)
+    def do_show(self, arg):
+        """Prints the string representation of an instance based on the class
+        name and id"""
+        if not arg:
+            print("** class name missing **")
         else:
-            print("** no instance found **")
+            try:
+                from models.base_model import BaseModel
+                from models import storage
+                args = arg.split()
+                if args[0] not in my_classes:
+                    print("** class doesn't exist **")
+                elif len(args) == 1:
+                    print("** instance id missing **")
+                else:
+                    my_dict = storage.all()
+                    key = args[0] + "." + args[1]
+                    obj = my_dict[key]
+                    # print(key)
+                    print(obj)
+            except KeyError:
+                print("** no instance found **")
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id"""

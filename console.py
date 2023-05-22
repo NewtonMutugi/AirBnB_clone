@@ -3,6 +3,12 @@
 import cmd
 from models import storage
 
+my_classes = {
+    "BaseModel",
+    "User",
+    "State",
+}
+
 
 class HBNBCommand(cmd.Cmd):
     """The console for the AirBnB project"""
@@ -67,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
         class_name = args[0]
         instance_id = args[1]
 
-        if class_name not in self.classes:
+        if class_name not in my_classes:
             print("** class doesn't exist **")
             return
 
@@ -89,7 +95,8 @@ class HBNBCommand(cmd.Cmd):
                 from models.base_model import BaseModel
                 from models import storage
                 args = arg.split()
-                if args[0] != "BaseModel":
+                # Test whether arg[0] is in my_classes dictionary
+                if args[0] not in my_classes:
                     print("** class doesn't exist **")
                 elif len(args) == 1:
                     print("** instance id missing **")
@@ -110,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
             try:
                 from models.base_model import BaseModel
                 args = arg.split()
-                if args[0] != "BaseModel":
+                if args[0] not in my_classes:
                     print("** class doesn't exist **")
                 else:
                     print([str(value) for value in storage.all().values()])
@@ -128,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
                 from models import storage
                 args = arg.split()
                 my_dict = storage.all()
-                if args[0] != "BaseModel":
+                if args[0] not in my_classes:
                     print("** class doesn't exist **")
                 elif len(args) == 1:
                     print("** instance id missing **")

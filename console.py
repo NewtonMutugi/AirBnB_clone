@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """The console for the AirBnB project"""
 import cmd
+from datetime import datetime
 from models import storage
 
 my_classes = {
@@ -8,6 +9,23 @@ my_classes = {
     "User",
     "State",
 }
+
+
+def attributes(self, classname):
+    """Returns the valid attributes and their types for classname."""
+
+    attributes = {
+        "BaseModel":
+                 {"id": str,
+                  "created_at": datetime,
+                  "updated_at": datetime},
+        "User":
+                 {"email": str,
+                  "password": str,
+                  "first_name": str,
+                  "last_name": str},
+    }
+    return attributes[classname]
 
 
 class HBNBCommand(cmd.Cmd):
@@ -124,8 +142,19 @@ class HBNBCommand(cmd.Cmd):
                     print("** no instance found **")
                 else:
                     key = args[0] + "." + args[1]
-                    setattr(storage.all()[key], args[2], args[3])
-                    storage.save()
+                    obj = my_dict[key]
+                    attribute_name = args[2]
+                    attribute_value = args[3]
+
+                    # Check the class type and update the attribute accordingly
+                    class_attributes = attributes(self, args[0])
+                    if attribute_name in class_attributes:
+                        attribute_type = class_attributes[attribute_name]
+                        attribute_value = attribute_type(attribute_value)
+                        setattr(obj, attribute_name, attribute_value)
+                        obj.save()
+                    else:
+                        print("** attribute doesn't exist **")
             except ModuleNotFoundError:
                 print("** class doesn't exist **")
 

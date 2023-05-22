@@ -39,7 +39,11 @@ class FileStorage:
             with open(FileStorage.__file_path, "r") as f:
                 new_dict = json.load(f)
                 for key, value in new_dict.items():
-                    FileStorage.__objects[key] = eval(
-                        value["__class__"])(**value)
+                    class_name = value["__class__"]
+                    if class_name == "User":
+                        obj = User(**value)
+                    else:
+                        obj = BaseModel(**value)
+                    FileStorage.__objects[key] = obj
         else:
             pass

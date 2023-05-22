@@ -4,6 +4,7 @@
 import json
 import os.path
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -42,5 +43,3 @@ class FileStorage:
                         value["__class__"])(**value)
         else:
             pass
-
-

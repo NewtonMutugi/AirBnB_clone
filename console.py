@@ -26,9 +26,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             try:
-                if arg[0] not in HBNBCommand.__classes:
-                    print("** class doesn't exist **")
-                    return
                 from models.base_model import BaseModel
                 new = BaseModel()
                 new.save()

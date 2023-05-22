@@ -103,6 +103,7 @@ class HBNBCommand(cmd.Cmd):
                 from models.base_model import BaseModel
                 from models import storage
                 args = arg.split()
+                my_dict = storage.all()
                 if args[0] != "BaseModel":
                     print("** class doesn't exist **")
                 elif len(args) == 1:
@@ -111,6 +112,8 @@ class HBNBCommand(cmd.Cmd):
                     print("** attribute name missing **")
                 elif len(args) == 3:
                     print("** value missing **")
+                elif "{}.{}".format(args[0], args[1]) not in my_dict.keys():
+                    print("** no instance found **")
                 else:
                     key = args[0] + "." + args[1]
                     setattr(storage.all()[key], args[2], args[3])

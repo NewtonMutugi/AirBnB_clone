@@ -116,7 +116,14 @@ class HBNBCommand(cmd.Cmd):
                 if args[0] not in my_classes:
                     print("** class doesn't exist **")
                 else:
-                    print([str(value) for value in storage.all().values()])
+                    # print([str(value) for value in storage.all().values()])
+                    objl = []
+                    for obj in storage.all().values():
+                        if len(args) > 0 and args[0] == obj.__class__.__name__:
+                            objl.append(obj.__str__())
+                        elif len(args) == 0:
+                            objl.append(obj.__str__())
+                    print(objl)
             except ModuleNotFoundError:
                 print("** class doesn't exist **")
 

@@ -170,6 +170,27 @@ class HBNBCommand(cmd.Cmd):
             except ModuleNotFoundError:
                 print("** class doesn't exist **")
 
+    def do_count(self, arg):
+        """Retrieves the number of instances of a class"""
+        if not arg:
+            print("** class name missing **")
+        else:
+            try:
+                args = arg.split()
+                class_name = args[0]
+                if class_name not in my_classes:
+                    print("** class doesn't exist **")
+                    return
+                else:
+                    count = 0
+                    objects = storage.all()
+                    for obj in objects.values():
+                        if class_name == obj.__class__.__name__:
+                            count += 1
+                    print(count)
+            except ModuleNotFoundError:
+                print("** class doesn't exist **")
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

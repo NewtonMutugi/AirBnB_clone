@@ -139,14 +139,19 @@ class HBNBCommand(cmd.Cmd):
                 my_dict = storage.all()
                 if args[0] not in my_classes:
                     print("** class doesn't exist **")
+                    return
                 elif len(args) == 1:
                     print("** instance id missing **")
+                    return
                 elif len(args) == 2:
                     print("** attribute name missing **")
+                    return
                 elif len(args) == 3:
                     print("** value missing **")
+                    return
                 elif "{}.{}".format(args[0], args[1]) not in my_dict.keys():
                     print("** no instance found **")
+                    return
                 else:
                     key = args[0] + "." + args[1]
                     obj = my_dict[key]

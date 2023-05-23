@@ -19,8 +19,8 @@ my_classes = {
     "State",
     "City",
     "Amenity",
-    "Place"
-    "Review"
+    "Place",
+    "Review",
 }
 
 

@@ -3,29 +3,25 @@
 import cmd
 from datetime import datetime
 from models import storage
+from models.engine.file_storage import attributes
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+from models.place import Place
+
 
 my_classes = {
     "BaseModel",
     "User",
     "State",
+    "City",
+    "Amenity",
+    "Place"
+    "Review"
 }
-
-
-def attributes(self, classname):
-    """Returns the valid attributes and their types for classname."""
-
-    attributes = {
-        "BaseModel":
-                 {"id": str,
-                  "created_at": datetime,
-                  "updated_at": datetime},
-        "User":
-                 {"email": str,
-                  "password": str,
-                  "first_name": str,
-                  "last_name": str},
-    }
-    return attributes[classname]
 
 
 class HBNBCommand(cmd.Cmd):
@@ -51,10 +47,13 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             try:
-                from models.base_model import BaseModel
-                new = BaseModel()
-                new.save()
-                print(new.id)
+                args = arg.split()
+                if args[0] not in my_classes:
+                    print("** class doesn't exits **")
+                    return
+                instance = eval(args[0])()
+                storage.save()
+                print(instance.id)
             except ModuleNotFoundError:
                 print("** class doesn't exist **")
 
@@ -77,6 +76,7 @@ class HBNBCommand(cmd.Cmd):
                     key = args[0] + "." + args[1]
                     if key not in my_dict:
                         print("** no instance found **")
+                        return
                     obj = my_dict[key]
                     # print(key)
                     print(obj)
@@ -89,7 +89,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             try:
-                from models.base_model import BaseModel
                 from models import storage
                 args = arg.split()
                 # Test whether arg[0] is in my_classes dictionary
@@ -128,7 +127,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             try:
-                from models.base_model import BaseModel
                 from models import storage
                 args = arg.split()
                 my_dict = storage.all()

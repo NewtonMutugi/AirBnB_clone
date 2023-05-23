@@ -1,27 +1,10 @@
 #!/usr/bin/python3
 """File storage module"""
 
-from datetime import datetime
 import json
 import os.path
 from models.base_model import BaseModel
 from models.user import User
-
-
-def attributes(self, classname):
-    """Returns the valid attributes and their types for classname."""
-    attributes = {
-        "BaseModel":
-                 {"id": str,
-                  "created_at": datetime,
-                  "updated_at": datetime},
-        "User":
-                 {"email": str,
-                  "password": str,
-                  "first_name": str,
-                  "last_name": str},
-    }
-    return attributes[classname]
 
 
 class FileStorage:
@@ -30,25 +13,6 @@ class FileStorage:
 
     __file_path = "file.json"
     __objects = {}
-
-    def classes(self):
-        """Returns a dictionary of valid classes and their references."""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
-
-        classes = {"BaseModel": BaseModel,
-                   "User": User,
-                   "State": State,
-                   "City": City,
-                   "Amenity": Amenity,
-                   "Place": Place,
-                   "Review": Review}
-        return classes
 
     def all(self):
         """Returns the dictionary __objects"""
@@ -67,7 +31,6 @@ class FileStorage:
             new_dict[key] = value.to_dict()
         with open(FileStorage.__file_path, "w") as f:
             json.dump(new_dict, f)
-            return
 
     def reload(self):
         """Deserializes the JSON file to __objects"""
@@ -77,7 +40,10 @@ class FileStorage:
                 new_dict = json.load(f)
                 for key, value in new_dict.items():
                     class_name = value["__class__"]
-                    obj = self.classes()[class_name](**value)
+                    if class_name == "User":
+                        obj = User(**value)
+                    else:
+                        obj = BaseModel(**value)
                     FileStorage.__objects[key] = obj
         else:
             pass

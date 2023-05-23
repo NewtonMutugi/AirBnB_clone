@@ -1,0 +1,18 @@
+/* Footer:
+color white
+height: 60px
+width: 100%
+border top 1px #CCCCCC
+text Best School center vertically and horizontally
+always at the bottom at the page */
+
+footer {
+	height: 60px;
+	width: 100%;
+	border-top: 1px solid #CCCCCC;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	bottom: 0;
+}

@@ -75,11 +75,13 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     my_dict = storage.all()
                     key = args[0] + "." + args[1]
+                    if key not in my_dict:
+                        print("** no instance found **")
                     obj = my_dict[key]
                     # print(key)
                     print(obj)
-            except KeyError:
-                print("** no instance found **")
+            except ModuleNotFoundError:
+                print("** class doesn't exist **")
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id"""

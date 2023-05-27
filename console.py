@@ -25,6 +25,12 @@ my_classes = {
 
 dot_commands = ['all', 'count', 'show', 'destroy', 'update']
 
+types = {
+    'number_rooms': int, 'number_bathrooms': int,
+    'max_guest': int, 'price_by_night': int,
+    'latitude': float, 'longitude': float
+}
+
 
 class HBNBCommand(cmd.Cmd):
     """The console for the AirBnB project"""
@@ -79,9 +85,17 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program"""
         return True
 
+    def help_quit(self):
+        """Help command for quit"""
+        print("Quit command to exit the program\n")
+
     def do_EOF(self, arg):
         """EOF command to exit the program"""
         return True
+
+    def help_EOF(self):
+        """Help command for EOF"""
+        print("EOF command to exit the program\n")
 
     def emptyline(self):
         """Do nothing when empty line is entered"""
@@ -210,21 +224,75 @@ class HBNBCommand(cmd.Cmd):
                     return
                 else:
                     key = args[0] + "." + args[1]
-                    obj = my_dict[key]
                     attribute_name = args[2]
                     attribute_value = args[3]
 
-                    # Check the class type and update the attribute accordingly
-                    class_attributes = attributes(self, args[0])
-                    if attribute_name in class_attributes:
-                        attribute_type = class_attributes[attribute_name]
-                        attribute_value = attribute_type(attribute_value)
-                        setattr(obj, attribute_name, attribute_value)
-                        obj.save()
+                    # first determine if kwargs or args
+                    if '{' in args[2] and '}' in args[2] and type(
+                            eval(args[2])) is dict:
+                        kwargs = eval(args[2])
+                        args = []
+                        for k, v in kwargs.items():
+                            args.append(k)
+                            args.append(v)
                     else:
-                        print("** attribute doesn't exist **")
+                        args = args[2]
+                        if args and args[0] == '\"':
+                            second_quote = args.find('\"', 1)
+                            attribute_name = args[1:second_quote]
+                            args = args[second_quote + 1:]
+
+                        args = args.partition(' ')
+
+                        if not attribute_name and args[0] != ' ':
+                            attribute_name = args[0]
+                        if args[2] and args[2][0] == '\"':
+                            attribute_value = args[2][1:args[2].find('\"', 1)]
+
+                        # if att_val was not quoted arg
+                        if not attribute_value and args[2]:
+                            attribute_value = args[2].partition(' ')[0]
+
+                        args = [attribute_name, attribute_value]
+
+                    # retrieve dictionary of current objects
+                    new_dict = storage.all()[key]
+
+                    # iterate through attr names and values
+                    for i, att_name in enumerate(args):
+                        if (i % 2 == 0):
+                            att_val = args[i + 1]
+                            if not att_name:
+                                print("** attribute name missing **")
+                                return
+                            if not att_val:
+                                print("** value missing **")
+                                return
+                            if att_name in types:
+                                att_val = types[att_name](att_val)
+
+                            # update dictionary with name, value pair
+                            new_dict.__dict__.update({att_name: att_val})
+
+                    new_dict.save()
             except KeyError:
                 print("** class doesn't exist **")
+
+    def help_create(self):
+        """ """
+        print("Usage: create <class_name>")
+
+    def help_show(self):
+        """ """
+        print("Usage: show <class_name> <id>")
+
+    def help_destroy(self):
+        """ """
+        print("Usage: destroy <class_name> <id>")
+
+    def help_all(self):
+        """ """
+        print("Usage: all <class_name>")
 
     def do_count(self, arg):
         """Retrieves the number of instances of a class"""
@@ -246,6 +314,10 @@ class HBNBCommand(cmd.Cmd):
                     print(count)
             except ModuleNotFoundError:
                 print("** class doesn't exist **")
+
+    def help_count(self):
+        """ """
+        print("Usage: count <class_name>")
 
 
 if __name__ == '__main__':

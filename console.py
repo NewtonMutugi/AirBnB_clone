@@ -109,7 +109,7 @@ class HBNBCommand(cmd.Cmd):
                         del storage.all()[key]
                         storage.save()
 
-            except ModuleNotFoundError:
+            except KeyError:
                 print("** class doesn't exist **")
 
     def do_all(self, arg):
@@ -176,7 +176,7 @@ class HBNBCommand(cmd.Cmd):
                         obj.save()
                     else:
                         print("** attribute doesn't exist **")
-            except ModuleNotFoundError:
+            except KeyError:
                 print("** class doesn't exist **")
 
     def do_count(self, arg):

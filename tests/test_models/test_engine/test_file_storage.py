@@ -1,6 +1,7 @@
 #!usr/bin/python3
 """Unittest for FileStorage class"""
 
+import os
 import unittest
 
 from models.base_model import BaseModel
@@ -48,6 +49,15 @@ class TestFileStorage(unittest.TestCase):
         new = BaseModel()
         storage.save()
         self.assertTrue(os.path.exists('file.json'))
+
+    def test_reload(self):
+        """ Storage file is successfully loaded to __objects """
+        new = BaseModel()
+        storage.save()
+        storage.reload()
+        for obj in storage.all().values():
+            loaded = obj
+        self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
 
     def test_file_path(self):
         """Test file_path attribute"""

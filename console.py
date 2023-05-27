@@ -23,7 +23,7 @@ my_classes = {
     "Review",
 }
 
-dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
+dot_commands = ['all', 'count', 'show', 'destroy', 'update']
 
 
 class HBNBCommand(cmd.Cmd):
@@ -46,20 +46,20 @@ class HBNBCommand(cmd.Cmd):
 
             # isolate and validate <command>
             _cmd = pline[pline.find('.') + 1:pline.find('(')]
-            if _cmd not in dot_cmds:
+            if _cmd not in dot_commands:
                 raise Exception
 
             # if parantheses contain arguments, parse them
             pline = pline[pline.find('(') + 1:pline.find(')')]
             if pline:
                 # partition args: (<id>, [<delim>], [<*args>])
-                pline = pline.partition(', ')  # pline convert to tuple
+                pline = pline.partition(', ')
 
                 # isolate _id, stripping quotes
                 _id = pline[0].replace('\"', '')
 
                 # if arguments exist beyond _id
-                pline = pline[2].strip()  # pline is now str
+                pline = pline[2].strip()
                 if pline:
                     # check for *args or **kwargs
                     if pline[0] == '{' and pline[-1] == '}'\

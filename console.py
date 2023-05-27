@@ -49,12 +49,14 @@ class HBNBCommand(cmd.Cmd):
             try:
                 args = arg.split()
                 if args[0] not in my_classes:
+                    print("** class doesn't exist **")
                     return
                 instance = eval(args[0])()
                 storage.save()
                 print(instance.id)
             except ModuleNotFoundError:
-                print("** class doesn't exist **")
+                # print("** class doesn't exist **")
+                return
 
     def do_show(self, arg):
         """Prints the string representation of an instance based on the class

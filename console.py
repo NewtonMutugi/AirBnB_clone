@@ -278,6 +278,11 @@ class HBNBCommand(cmd.Cmd):
             except KeyError:
                 print("** class doesn't exist **")
 
+    def help_update(self):
+        """ """
+        print("Usage: update <class_name> <id> <attribute_name> \
+<attribute_value>")
+
     def help_create(self):
         """ """
         print("Usage: create <class_name>")

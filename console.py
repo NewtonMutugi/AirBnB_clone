@@ -23,10 +23,20 @@ my_classes = {
     "Review",
 }
 
+dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
+
 
 class HBNBCommand(cmd.Cmd):
     """The console for the AirBnB project"""
     prompt = '(hbnb) '
+
+    def precmd(self, line):
+        """Pre command to check for dot commands"""
+        if '.' in line:
+            args = line.split('.')
+            if args[0] in my_classes and args[1] in dot_cmds:
+                line = args[1] + ' ' + args[0]
+        return line
 
     def do_quit(self, arg):
         """Quit command to exit the program"""

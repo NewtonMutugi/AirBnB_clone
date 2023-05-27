@@ -32,11 +32,48 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Pre command to check for dot commands"""
-        if '.' in line:
-            args = line.split('.')
-            if args[0] in my_classes and args[1] in dot_cmds:
-                line = args[1] + ' ' + args[0]
-        return line
+
+        _cmd = _cls = _id = _args = ''  # initialize line elements
+
+        if not ('.' in line and '(' in line and ')' in line):
+            return line
+
+        try:
+            pline = line[:]
+
+            # isolate <class name>
+            _cls = pline[:pline.find('.')]
+
+            # isolate and validate <command>
+            _cmd = pline[pline.find('.') + 1:pline.find('(')]
+            if _cmd not in dot_cmds:
+                raise Exception
+
+            # if parantheses contain arguments, parse them
+            pline = pline[pline.find('(') + 1:pline.find(')')]
+            if pline:
+                # partition args: (<id>, [<delim>], [<*args>])
+                pline = pline.partition(', ')  # pline convert to tuple
+
+                # isolate _id, stripping quotes
+                _id = pline[0].replace('\"', '')
+
+                # if arguments exist beyond _id
+                pline = pline[2].strip()  # pline is now str
+                if pline:
+                    # check for *args or **kwargs
+                    if pline[0] == '{' and pline[-1] == '}'\
+                            and type(eval(pline)) is dict:
+                        _args = pline
+                    else:
+                        _args = pline.replace(',', '')
+
+            line = ' '.join([_cmd, _cls, _id, _args])
+
+        except Exception as mess:
+            pass
+        finally:
+            return line
 
     def do_quit(self, arg):
         """Quit command to exit the program"""

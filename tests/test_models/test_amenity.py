@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Tests the Amenity class"""
-from types import NotImplementedType
 import unittest
 from models.amenity import Amenity
 

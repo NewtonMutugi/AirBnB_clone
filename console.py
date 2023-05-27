@@ -95,12 +95,20 @@ class HBNBCommand(cmd.Cmd):
                 # Test whether arg[0] is in my_classes dictionary
                 if args[0] not in my_classes:
                     print("** class doesn't exist **")
+                    return
                 elif len(args) == 1:
                     print("** instance id missing **")
+                    return
                 else:
                     key = args[0] + "." + args[1]
-                    del storage.all()[key]
-                    storage.save()
+
+                    if key not in storage.all():
+                        print("** no instance found **")
+                        return
+                    else:
+                        del storage.all()[key]
+                        storage.save()
+
             except ModuleNotFoundError:
                 print("** class doesn't exist **")
 

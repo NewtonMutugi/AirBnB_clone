@@ -49,7 +49,6 @@ class HBNBCommand(cmd.Cmd):
             try:
                 args = arg.split()
                 if args[0] not in my_classes:
-                    print("** class doesn't exits **")
                     return
                 instance = eval(args[0])()
                 storage.save()

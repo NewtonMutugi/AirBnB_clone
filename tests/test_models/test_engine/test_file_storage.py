@@ -36,12 +36,18 @@ class TestFileStorage(unittest.TestCase):
         key = base.__class__.__name__ + "." + base.id
         self.assertEqual(storage.all()[key], base)
 
+    # def test_save(self):
+    #     """Test save method"""
+    #     base = BaseModel()
+    #     base.save()
+    #     key = base.__class__.__name__ + "." + base.id
+    #     self.assertTrue(key in storage.all())
+
     def test_save(self):
-        """Test save method"""
-        base = BaseModel()
-        base.save()
-        key = base.__class__.__name__ + "." + base.id
-        self.assertTrue(key in storage.all())
+        """ FileStorage save method """
+        new = BaseModel()
+        storage.save()
+        self.assertTrue(os.path.exists('file.json'))
 
     def test_file_path(self):
         """Test file_path attribute"""
